@@ -304,7 +304,7 @@
 
 /* Macro to generate binary for floating-point weighted graph applications that
  * can ingest only symmetric graph inputs */
-#define generate_symmetric_float_weighted_main(APP)                     \
+#define generate_symmetric_float_weighted_main(APP, mutates)            \
   int main(int argc, char* argv[]) {                                    \
     gbbs::commandLine P(argc, argv, " [-s] <inFile>");                  \
     char* iFile = P.getArgument(0);                                     \
@@ -313,11 +313,7 @@
     bool mmap = P.getOptionValue("-m");                                 \
     bool binary = P.getOptionValue("-b");                               \
     size_t rounds = P.getOptionLongValue("-rounds", 3);                 \
-    if (compressed) {                                                   \
-      ABORT("Graph compression not yet implemented for float weights"); \
-    } else {                                                            \
-      auto G = gbbs::gbbs_io::read_weighted_symmetric_graph<float>(     \
-          iFile, mmap, binary);                                         \
-      run_app(G, APP, mutates, rounds)                                  \
-    }                                                                   \
+    auto G = gbbs::gbbs_io::read_weighted_symmetric_graph<float>(     \
+        iFile, mmap, binary);                                         \
+    run_app(G, APP, mutates, rounds)                                  \
   }
