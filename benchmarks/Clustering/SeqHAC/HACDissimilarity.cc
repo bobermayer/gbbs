@@ -185,4 +185,4 @@ double HAC_runner(Graph& G, commandLine P) {
 
 }  // namespace gbbs
 
-generate_symmetric_weighted_main(gbbs::HAC_runner, false);
+generate_symmetric_float_weighted_main(gbbs::HAC_runner, false);

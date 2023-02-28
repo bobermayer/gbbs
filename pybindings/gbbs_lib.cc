@@ -5,26 +5,7 @@
 #include "gbbs/vertex.h"
 #include "gbbs/vertex_subset.h"
 
-#include "ApproximateSetCover_lib.h"
-#include "BFS_lib.h"
-#include "BellmanFord_lib.h"
-#include "CC_lib.h"
-#include "DeltaStepping_lib.h"
 #include "HAC_lib.h"
-#include "KCore_lib.h"
-#include "MinimumSpanningForest_lib.h"
-#include "PageRank_lib.h"
-
-//#include "benchmarks/Biconnectivity/TarjanVishkin/Biconnectivity.h"
-//#include "benchmarks/Clustering/SeqHAC/HAC_api.h"
-//#include "benchmarks/Connectivity/WorkEfficientSDB14/Connectivity.h"
-//#include "benchmarks/MinimumSpanningForest/Boruvka/MinimumSpanningForest.h"
-//#include "benchmarks/KCore/JulienneDBS17/KCore.h"
-//#include "benchmarks/CoSimRank/CoSimRank.h"
-//#include "benchmarks/GeneralWeightSSSP/BellmanFord/BellmanFord.h"
-//#include "benchmarks/PageRank/PageRank.h"
-//#include
-//"benchmarks/StronglyConnectedComponents/RandomGreedyBGSS16/StronglyConnectedComponents.h"
 
 #include "pybind11/numpy.h"
 #include "pybind11/pybind11.h"
@@ -219,48 +200,6 @@ void SymGraphRegister(py::module& m, std::string graph_name) {
            [](graph& G, std::string& filename) -> void {
              gbbs_io::write_graph_to_file(filename.c_str(), G);
            })
-      .def("BFS",
-           [&](graph& G, const size_t src) {
-             auto parents = compiled::BFS(G, src);
-             return wrap_array(parents);
-           },
-           py::arg("src"))
-      .def("Connectivity",
-           [&](graph& G) {
-             auto ccs = compiled::Connectivity(G);
-             return wrap_array(ccs);
-           })
-      .def("ApproximateSetCover",
-           [&](graph& G, size_t num_buckets) {
-             auto ccs = compiled::ApproximateSetCover(G, num_buckets);
-             return wrap_array(ccs);
-           })
-      .def("KCore",
-           [&](graph& G) {
-             auto cores = compiled::KCore(G);
-             return wrap_array(cores);
-           })
-      .def("PageRank",
-           [&](graph& G) {
-             auto ranks = compiled::PageRank(G);
-             return wrap_array(ranks);
-           })
-      .def("MinimumSpanningForest",
-           [&](graph& G) {
-             auto G_copy = G;
-             auto edges = compiled::MinimumSpanningForest(G_copy);
-             return build_edgelist<W>(edges);
-           })
-      .def("BellmanFord",
-           [&](graph& G, uintE source) {
-             auto distances = compiled::BellmanFord(G, source);
-             return wrap_array(distances);
-           })
-      .def("DeltaStepping",
-           [&](graph& G, uintE source, Distance delta) {
-             auto distances = compiled::DeltaStepping(G, source, delta);
-             return wrap_array(distances);
-           })
       .def("HierarchicalAgglomerativeClustering",
            [&](graph& G, std::string& linkage, bool similarity = true) {
              if
@@ -300,13 +239,7 @@ void AsymGraphRegister(py::module& m, std::string graph_name) {
   using graph = asymmetric_graph<vertex_type, W>;
   py::class_<graph>(m, graph_name.c_str())
       .def("numVertices", [](const graph& G) -> size_t { return G.n; })
-      .def("numEdges", [](const graph& G) -> size_t { return G.m; })
-      .def("BFS",
-           [&](graph& G, const size_t src) {
-             auto parents = compiled::BFS(G, src);
-             return 1.0;
-           },
-           py::arg("src"));
+      .def("numEdges", [](const graph& G) -> size_t { return G.m; });
 }
 
 PYBIND11_MODULE(gbbs_lib, m) {
