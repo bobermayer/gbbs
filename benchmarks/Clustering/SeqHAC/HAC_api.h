@@ -33,6 +33,10 @@ sequence<std::pair<uintE, typename Graph::weight_type>> RunHAC(
       auto Wghs = MinLinkage<Graph, DissimilarityClustering, ActualWeight>(G);
       dendrogram = nn_chain::HAC(G, Wghs);
     }
+  } else if (linkage == "average") {
+      auto Wghs =
+        WeightedAverageLinkage<Graph, DissimilarityClustering, ActualWeight>(G);
+      dendrogram = nn_chain::HAC(G, Wghs);
   } else {
     std::cout << "Unknown linkage function" << std::endl;
     exit(0);

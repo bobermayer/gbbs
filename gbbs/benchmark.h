@@ -317,3 +317,19 @@
         iFile, mmap, binary);                                         \
     run_app(G, APP, mutates, rounds)                                  \
   }
+
+/* Macro to generate binary for floating-point weighted graph applications that
+ * can ingest only symmetric graph inputs */
+#define generate_symmetric_double_weighted_main(APP, mutates)            \
+  int main(int argc, char* argv[]) {                                    \
+    gbbs::commandLine P(argc, argv, " [-s] <inFile>");                  \
+    char* iFile = P.getArgument(0);                                     \
+    debug(bool symmetric = P.getOptionValue("-s"); assert(symmetric);); \
+    bool compressed = P.getOptionValue("-c");                           \
+    bool mmap = P.getOptionValue("-m");                                 \
+    bool binary = P.getOptionValue("-b");                               \
+    size_t rounds = P.getOptionLongValue("-rounds", 3);                 \
+    auto G = gbbs::gbbs_io::read_weighted_symmetric_graph<double>(     \
+        iFile, mmap, binary);                                         \
+    run_app(G, APP, mutates, rounds)                                  \
+  }

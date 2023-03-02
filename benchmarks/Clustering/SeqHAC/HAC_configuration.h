@@ -150,11 +150,10 @@ struct SimilarityClustering {
 template <class Graph, class ClusteringType = DissimilarityClustering,
           class GetWeight = EmptyToLogW>
 struct WeightedAverageLinkage
-    : ClusteringType::template WeightedClustering<Graph, float, GetWeight> {
+    : ClusteringType::template Clustering<Graph, GetWeight> {
   using base =
-      typename ClusteringType::template WeightedClustering<Graph, float,
-                                                           GetWeight>;
-  using weight_type = float;
+      typename ClusteringType::template Clustering<Graph, GetWeight>;
+  using weight_type = typename base::weight_type; /* double;*/
   using base::base;
 
   // The linkage function.

@@ -5,6 +5,7 @@ this fork makes python bindings for Hierarchical Agglomerative Clustering (more 
 compile with:
 
 ```
+bazel build //...
 bazel build //pybindings:gbbs_lib.so
 ```
 
