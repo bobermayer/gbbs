@@ -369,7 +369,7 @@ PYBIND11_MODULE(gbbs_lib, m) {
   // Uint weighted graph.
   m.def("numpyUintEdgeListToSymmetricWeightedGraph",
         [&](py::array_t<uint32_t> input) {
-          std::cout << "Constructing uint weighted graph." << std::endl;
+          // std::cout << "Constructing uint weighted graph." << std::endl;
           auto G = edgeListToSymmetricWeightedGraph<uint32_t>(input);
           return G;
         });
@@ -377,7 +377,7 @@ PYBIND11_MODULE(gbbs_lib, m) {
   // Uint weighted graph.
   m.def("numpyFloatEdgeListToSymmetricWeightedGraph",
         [&](py::array_t<float> input) {
-          std::cout << "Constructing float weighted graph." << std::endl;
+          // std::cout << "Constructing float weighted graph." << std::endl;
           auto G = edgeListToSymmetricWeightedGraph<float>(input);
           return G;
         });

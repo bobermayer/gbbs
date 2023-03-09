@@ -70,7 +70,7 @@ struct ActualWeight {
 struct DissimilarityClustering {
   struct data {};
 
-  template <class Graph, class GetWeight = EmptyToLogW>
+  template <class Graph, class GetWeight = ActualWeight>
   struct Clustering : GetWeight::template GetWeight<Graph> {
     using base = typename GetWeight::template GetWeight<Graph>;
     using weight_type = typename base::weight_type;
@@ -88,7 +88,7 @@ struct DissimilarityClustering {
     static weight_type id() { return std::numeric_limits<weight_type>::max(); }
   };
 
-  template <class Graph, class WeightType, class GetWeight = EmptyToLogW>
+  template <class Graph, class WeightType, class GetWeight = ActualWeight>
   struct WeightedClustering : GetWeight::template GetWeight<Graph, WeightType> {
     using base = typename GetWeight::template GetWeight<Graph, WeightType>;
     using weight_type = WeightType;
@@ -110,7 +110,7 @@ struct DissimilarityClustering {
 struct SimilarityClustering {
   struct data {};
 
-  template <class Graph, class GetWeight = EmptyToLogW>
+  template <class Graph, class GetWeight = ActualWeight>
   struct Clustering : GetWeight::template GetWeight<Graph> {
     using base = typename GetWeight::template GetWeight<Graph>;
     using weight_type = typename base::weight_type;
@@ -128,7 +128,7 @@ struct SimilarityClustering {
     static weight_type id() { return (weight_type)0; }
   };
 
-  template <class Graph, class WeightType, class GetWeight = EmptyToLogW>
+  template <class Graph, class WeightType, class GetWeight = ActualWeight>
   struct WeightedClustering : GetWeight::template GetWeight<Graph, WeightType> {
     using base = typename GetWeight::template GetWeight<Graph, WeightType>;
     using weight_type = WeightType;
@@ -148,7 +148,7 @@ struct SimilarityClustering {
 };
 
 template <class Graph, class ClusteringType = DissimilarityClustering,
-          class GetWeight = EmptyToLogW>
+          class GetWeight = ActualWeight>
 struct WeightedAverageLinkage
     : ClusteringType::template Clustering<Graph, GetWeight> {
   using base =
@@ -167,7 +167,7 @@ struct WeightedAverageLinkage
 };
 
 template <class Graph, class ClusteringType = DissimilarityClustering,
-          class GetWeight = EmptyToLogW>
+          class GetWeight = ActualWeight>
 struct MaxLinkage : ClusteringType::template Clustering<Graph, GetWeight> {
   using base = typename ClusteringType::template Clustering<Graph, GetWeight>;
   using weight_type = typename base::weight_type;
@@ -184,7 +184,7 @@ struct MaxLinkage : ClusteringType::template Clustering<Graph, GetWeight> {
 };
 
 template <class Graph, class ClusteringType = DissimilarityClustering,
-          class GetWeight = EmptyToLogW>
+          class GetWeight = ActualWeight>
 struct MinLinkage : ClusteringType::template Clustering<Graph, GetWeight> {
   using base = typename ClusteringType::template Clustering<Graph, GetWeight>;
   using weight_type = typename base::weight_type;
@@ -235,7 +235,7 @@ bool operator!=(const NormAvgLinkWeight& l, const NormAvgLinkWeight& r) {
 }
 
 template <class Graph, class ClusteringType = DissimilarityClustering,
-          class GetWeight = EmptyToLogW>
+          class GetWeight = ActualWeight>
 struct NormAverageLinkage
     : ClusteringType::template WeightedClustering<Graph, NormAvgLinkWeight,
                                                   GetWeight> {
@@ -290,7 +290,7 @@ bool operator!=(const AvgLinkWeight& l, const AvgLinkWeight& r) {
 }
 
 template <class Graph, class ClusteringType = DissimilarityClustering,
-          class GetWeight = EmptyToLogW>
+          class GetWeight = ActualWeight>
 struct ApproxAverageLinkage
     : ClusteringType::template WeightedClustering<Graph, AvgLinkWeight,
                                                   GetWeight> {

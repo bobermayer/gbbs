@@ -12,7 +12,7 @@ namespace gbbs {
 template <class Sim, class Graph>
 sequence<std::pair<uintE, typename Graph::weight_type>> RunHAC(
     Graph& G, std::string linkage) {
-  sequence<std::pair<uintE, typename Graph::weight_type>> dendrogram;
+  sequence<std::pair<uintE, typename Graph::weight_type>> dendrogram;   
   if (linkage == "complete") {
     if
       constexpr(std::is_same<Sim, SimilarityClustering>()) {
@@ -34,9 +34,15 @@ sequence<std::pair<uintE, typename Graph::weight_type>> RunHAC(
       dendrogram = nn_chain::HAC(G, Wghs);
     }
   } else if (linkage == "average") {
-      auto Wghs =
-        WeightedAverageLinkage<Graph, DissimilarityClustering, ActualWeight>(G);
+    if
+      constexpr(std::is_same<Sim, SimilarityClustering>()) {
+        auto Wghs = WeightedAverageLinkage<Graph, Sim, ActualWeight>(G);
+        dendrogram = nn_chain::HAC(G, Wghs);
+      }
+    else {
+      auto Wghs = WeightedAverageLinkage<Graph, DissimilarityClustering, ActualWeight>(G);
       dendrogram = nn_chain::HAC(G, Wghs);
+    }
   } else {
     std::cout << "Unknown linkage function" << std::endl;
     exit(0);
@@ -47,8 +53,7 @@ sequence<std::pair<uintE, typename Graph::weight_type>> RunHAC(
 template <class Graph>
 sequence<std::pair<uintE, typename Graph::weight_type>> HAC(
     Graph& G, std::string linkage, bool similarity = true) {
-  std::cout << "linkage = " << linkage << " similarity = " << similarity
-            << std::endl;
+  /* std::cout << "linkage = " << linkage << " similarity = " << similarity << std::endl; */
   if (similarity) return RunHAC<SimilarityClustering>(G, linkage);
   return RunHAC<DissimilarityClustering>(G, linkage);
 }
