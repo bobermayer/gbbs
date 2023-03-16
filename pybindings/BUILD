@@ -3,6 +3,7 @@ licenses(["notice"])
 package(default_visibility = ["//visibility:public"])
 
 load("//internal_tools:py_extension.bzl", "py_extension")
+#load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
 
 cc_library(
     name = "HAC_lib",
